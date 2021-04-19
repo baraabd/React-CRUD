@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux"
+import * as action from "../actions/transactionActions"
+import { bindActionCreators } from "redux"
 
 class TransactionForm extends Component {
     state = {
@@ -31,7 +34,10 @@ class TransactionForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault()
-        this.props.onAddOrEdit(this.state)
+        if(this.props.currentIndex === -1)
+        this.props.insertTransaction(this.state) 
+        else
+        this.props.updateTransaction(this.state) 
     }
 
     render() {
@@ -42,12 +48,23 @@ class TransactionForm extends Component {
                 <input name='bName' placeholder='A/C Holder Name' value={this.state.bName} onChange={this.handleInputChange} /><br />
                 <input name='amount' placeholder='Amount' value={this.state.amount} onChange={this.handleInputChange} /><br />
                 <button name='submit'>Submit</button>
-
-
-
             </form>
         );
     }
 }
 
-export default TransactionForm;
+const mapStateProps = state => {
+    return {
+      list: state.list,
+      currentIndex: state.currentIndex
+    }
+  }
+  
+  const mapDispatchToProps = dispatch =>{
+    return bindActionCreators({
+      insertTransaction: action.insert,
+      updateTransaction: action.update
+    },dispatch)
+  }
+
+export default connect(mapStateProps,mapDispatchToProps)(TransactionForm);

@@ -1,20 +1,20 @@
 export const transactionReducer = (state, action) => {
-    var list = JSON.parse(localStorage.getItem('transaction'))
+    var list = JSON.parse(localStorage.getItem('transactions'))
 
     switch (action.type) {
         case "INSERT":
             list.push(action.payload)
-            localStorage.setItem('transaction', JSON.stringify(list))
+            localStorage.setItem('transactions', JSON.stringify(list))
             return { list, currentIndex: -1 }
 
-        case "UPPDATE":
+        case "UPDATE":
             list[state.currentIndex] = action.payload
-            localStorage.setItem('transaction', JSON.stringify(list))
+            localStorage.setItem('transactions', JSON.stringify(list))
             return { list, currentIndex: -1 }
 
         case "DELETE":
-            list.slice(action.payload, 1)
-            localStorage.setItem('transaction', JSON.stringify(list))
+            list.splice(action.payload, 1)
+            localStorage.setItem('transactions', JSON.stringify(list))
             return { list, currentIndex: -1 }
 
         case "UPDATE-INDEX":

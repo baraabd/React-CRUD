@@ -15,7 +15,7 @@ export const update = data => {
 export const Delete = index => {
     return {
         type: 'DELETE',
-        payload : data
+        payload : index
     }
 }
 
@@ -23,6 +23,6 @@ export const Delete = index => {
 export const UpdateIndex = index => {
     return {
         type: 'UPDATE-INDEX',
-        payload : data
+        payload : index
     }
 }
