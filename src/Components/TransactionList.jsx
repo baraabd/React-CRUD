@@ -8,19 +8,19 @@ class TransactionList extends Component {
   }
 
   returnList() {
-    if (localStorage.getItem('transactiona') == null)
-      localStorage.setItem('transactiona', JSON.stringify([]))
-    return JSON.parse(localStorage.getItem('transactiona'))
+    if (localStorage.getItem('transactions') == null)
+      localStorage.setItem('transactions', JSON.stringify([]))
+    return JSON.parse(localStorage.getItem('transactions'))
   }
 
   onAddOrEdit = (data) => {
     var list = this.returnList()
-    if (this.state.currentIndex == -1)
+    if (this.state.currentIndex === -1)
       list.push(data)
     else
       list[this.state.currentIndex] = data
-    localStorage.setItem('transactiona', JSON.stringify(list))
-    this.setState({ list })
+    localStorage.setItem('transactions', JSON.stringify(list))
+    this.setState({ list, currentIndex:-1 })
 
   }
 
@@ -31,14 +31,21 @@ class TransactionList extends Component {
     })
   }
 
+  handleDelete = index => {
+    var list = this.returnList()
+    list.splice(index,1)
+    localStorage.setItem('transactions', JSON.stringify(list))
+    this.setState({ list, currentIndex:-1 })
+  }
+
 
   render() {
     return (
       <div>
         <TransactionForm
-          onAddOrEdit={this.onAddOrEdit}
-          currentIndex={this.state.currentIndex}
-          list={this.state.list}
+          onAddOrEdit = {this.onAddOrEdit}
+          currentIndex = {this.state.currentIndex}
+          list = {this.state.list}
 
         />
         <hr />
@@ -52,6 +59,7 @@ class TransactionList extends Component {
                   <td> {item.bName} </td>
                   <td> {item.amount} </td>
                   <td><button onClick={() => this.handleEdit(index)}>Edit</button></td>
+                  <td><button onClick={() => this.handleDelete(index)}>Delete</button></td>
                 </tr>
               })
             }
